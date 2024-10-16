@@ -1,7 +1,6 @@
 package org.example.practicamongodb.ctrll;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,14 +12,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import org.bson.Document;
 import org.example.practicamongodb.dao.CocheDAO;
 import org.example.practicamongodb.model.Coche;
 import org.example.practicamongodb.util.ConnectionDB;
+import org.example.practicamongodb.util.CreadorTablas;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -41,8 +40,6 @@ public class MenuCtrll implements Initializable {
     private final ObservableList<Coche> coches = FXCollections.observableArrayList();
     private final ObservableList<String> tipos = FXCollections.observableArrayList();
 
-    private MongoCollection<Document> collection;
-
     private Coche cocheCargado = null;
 
 
@@ -55,19 +52,13 @@ public class MenuCtrll implements Initializable {
 
         ConnectionDB.conectar();
 
-        coches.addAll(CocheDAO.listarCoches());
+        CreadorTablas.crearTablas();
 
+        coches.addAll(CocheDAO.listarCoches());
         tablaCoches.setItems(coches);
 
-
-        // TODO collecion tipos con los distintos tipos
-        ArrayList<String> t = new ArrayList<>(Arrays.asList("Deportivo", "Familiar", "TodoTerreno"));
-        tipos.addAll(t);
-
+        tipos.addAll(CreadorTablas.listarTipos());
         inTipo.setItems(tipos);
-
-        // TODO comprobar si estan los tipos en la base de datos y si no agregarlos
-
 
     }
 
@@ -97,8 +88,6 @@ public class MenuCtrll implements Initializable {
     }
 
     public void onActualizar(ActionEvent actionEvent) {
-        cocheCargado = tablaCoches.getSelectionModel().getSelectedItem();
-
         if (cocheCargado == null) {
             return;
         }
@@ -117,7 +106,7 @@ public class MenuCtrll implements Initializable {
         tablaCoches.refresh();
         tablaCoches.getSelectionModel().select(c);
 
-
+        cocheCargado = c;
     }
 
     public void onEliminar(ActionEvent actionEvent) {
