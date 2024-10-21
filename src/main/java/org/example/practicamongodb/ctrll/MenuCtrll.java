@@ -106,6 +106,8 @@ public class MenuCtrll implements Initializable {
             return;
         }
 
+        c.set_id(cocheCargado.get_id());
+
         coches.set(coches.indexOf(cocheCargado), c);
 
         tablaCoches.getSelectionModel().select(c);

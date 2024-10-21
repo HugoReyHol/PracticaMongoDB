@@ -51,11 +51,8 @@ public class CocheDAO {
         Document filtro = new Document("matricula", new Document("$eq", cocheNuevo.getMatricula()))
                 .append("_id", new Document("$ne", cocheAntiguo.get_id()));
 
-        // eq("matricula", cocheNuevo.getMatricula())
-        // new Document("$eq", cocheNuevo.getMatricula()).append("$ne", String.valueOf(cocheAntiguo.get_id()))
+
         try (MongoCursor<Document> f = collection.find(filtro).cursor()) {
-            System.out.println(f);
-            //if (f.hasNext()) f.next();
             if (f.hasNext()) return false;
 
         } catch (Exception e) {
@@ -66,9 +63,9 @@ public class CocheDAO {
         Document cN = Document.parse(gson.toJson(cocheNuevo));
         cN.remove("_id");
 
-        Document acuatizar = new Document("$set", cN);
+        Document actualizar = new Document("$set", cN);
 
-        collection.updateOne(cA, acuatizar);
+        collection.updateOne(cA, actualizar);
 
         return true;
 
