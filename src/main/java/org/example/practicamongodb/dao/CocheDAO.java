@@ -64,10 +64,8 @@ public class CocheDAO {
 
         Document cA = Document.parse(gson.toJson(cocheAntiguo));
         Document cN = Document.parse(gson.toJson(cocheNuevo));
+        cN.remove("_id");
 
-//      collection.replaceOne(cA, cN);
-
-        // TODO cambiar forma de update para que no aplique a _id
         Document acuatizar = new Document("$set", cN);
 
         collection.updateOne(cA, acuatizar);
