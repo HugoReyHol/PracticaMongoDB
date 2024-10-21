@@ -1,6 +1,7 @@
 package org.example.practicamongodb.model;
 
 public class Coche {
+    private int _id;
     private String matricula;
     private String marca;
     private String modelo;
@@ -10,7 +11,8 @@ public class Coche {
     public Coche() {
     }
 
-    public Coche(String matricula, String marca, String modelo, String tipo) {
+    public Coche(int _id, String matricula, String marca, String modelo, String tipo) {
+        this._id = _id;
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
@@ -19,6 +21,14 @@ public class Coche {
 
     public String getMatricula() {
         return matricula;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public void setMatricula(String matricula) {

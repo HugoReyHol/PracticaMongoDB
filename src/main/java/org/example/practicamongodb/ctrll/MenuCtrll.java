@@ -16,9 +16,9 @@ import javafx.scene.input.MouseEvent;
 import org.example.practicamongodb.dao.CocheDAO;
 import org.example.practicamongodb.dao.TiposDAO;
 import org.example.practicamongodb.model.Coche;
+import org.example.practicamongodb.util.AlertUtil;
 import org.example.practicamongodb.util.ConnectionDB;
 import org.example.practicamongodb.util.CreadorTablas;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -50,10 +50,7 @@ public class MenuCtrll implements Initializable {
         colModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
 
-        if (!ConnectionDB.conectar()) {
-            Platform.exit();
-
-        }
+        if (!ConnectionDB.conectar()) Platform.exit();
 
         CreadorTablas.crearTablas();
 
@@ -81,12 +78,14 @@ public class MenuCtrll implements Initializable {
         c.setModelo(inModelo.getText());
         c.setTipo(inTipo.getValue());
 
-        CocheDAO.guardarCoche(c);
+        if (!CocheDAO.guardarCoche(c)) {
+            AlertUtil.mostrarInfo("Esa matricula ya está asignada");
+            return;
+        }
 
         cocheCargado = c;
 
         coches.add(c);
-        tablaCoches.refresh();
 
     }
 
@@ -102,11 +101,13 @@ public class MenuCtrll implements Initializable {
         c.setModelo(inModelo.getText());
         c.setTipo(inTipo.getValue());
 
-        CocheDAO.actualizarCoche(cocheCargado, c);
+        if (!CocheDAO.actualizarCoche(cocheCargado, c)) {
+            AlertUtil.mostrarInfo("Esa matricula ya está asignada");
+            return;
+        }
 
         coches.set(coches.indexOf(cocheCargado), c);
 
-        tablaCoches.refresh();
         tablaCoches.getSelectionModel().select(c);
 
         cocheCargado = c;
@@ -120,8 +121,6 @@ public class MenuCtrll implements Initializable {
         CocheDAO.eliminarCoche(cocheCargado);
 
         coches.remove(cocheCargado);
-
-        tablaCoches.refresh();
 
         cocheCargado = null;
 
@@ -142,6 +141,8 @@ public class MenuCtrll implements Initializable {
         inTipo.setValue(c.getTipo());
 
         cocheCargado = c;
+
+        System.out.println(c.get_id());
     }
 
 
