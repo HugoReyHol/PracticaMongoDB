@@ -18,8 +18,6 @@ import org.example.practicamongodb.util.ConnectionDB;
 import org.example.practicamongodb.util.CreadorTablas;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 

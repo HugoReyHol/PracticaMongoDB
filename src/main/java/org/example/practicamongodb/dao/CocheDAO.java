@@ -30,7 +30,11 @@ public class CocheDAO {
         Document cA = Document.parse(gson.toJson(cocheAntiguo));
         Document cN = Document.parse(gson.toJson(cocheNuevo));
 
-        collection.replaceOne(cA, cN);
+//      collection.replaceOne(cA, cN);
+
+        Document acuatizar = new Document("$set", cN);
+
+        collection.updateOne(cA, acuatizar);
 
     }
 
