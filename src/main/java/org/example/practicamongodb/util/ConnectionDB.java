@@ -14,9 +14,7 @@ import java.util.Properties;
 public class ConnectionDB {
     private static MongoClient con;
 
-    public static boolean conectar()
-    {
-  
+    public static boolean conectar() {
         try {
             Properties configuration = new Properties();
             configuration.load(R.getProperties("database.properties"));
@@ -35,12 +33,12 @@ public class ConnectionDB {
         }
         catch (Exception e) {
             System.out.println("Conexion Fallida");
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return false;
         }
     }
-    public static void desconectar(MongoClient con)
-    {
+    public static void desconectar() {
+        System.out.println("Desconectando base de datos");
         con.close();
     }
 

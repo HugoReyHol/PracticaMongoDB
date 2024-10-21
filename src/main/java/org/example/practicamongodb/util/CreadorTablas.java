@@ -3,7 +3,6 @@ package org.example.practicamongodb.util;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +22,4 @@ public class CreadorTablas {
         collection.insertOne(new Document("tipos", new ArrayList<>(List.of(listaTipos))));
 
     }
-
-    public static ArrayList<String> listarTipos() {
-        MongoDatabase database = ConnectionDB.getCon().getDatabase("practicaMongo");
-        
-        MongoCollection<Document> collection = database.getCollection("tipos");
-        
-        Document tipos = collection.find().first();
-        
-        return (ArrayList<String>) tipos.get("tipos");
-
-    }
-
 }

@@ -1,6 +1,7 @@
 package org.example.practicamongodb.ctrll;
 
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import org.example.practicamongodb.dao.CocheDAO;
+import org.example.practicamongodb.dao.TiposDAO;
 import org.example.practicamongodb.model.Coche;
 import org.example.practicamongodb.util.ConnectionDB;
 import org.example.practicamongodb.util.CreadorTablas;
@@ -48,14 +50,17 @@ public class MenuCtrll implements Initializable {
         colModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
 
-        ConnectionDB.conectar();
+        if (!ConnectionDB.conectar()) {
+            Platform.exit();
+
+        }
 
         CreadorTablas.crearTablas();
 
         coches.addAll(CocheDAO.listarCoches());
         tablaCoches.setItems(coches);
 
-        tipos.addAll(CreadorTablas.listarTipos());
+        tipos.addAll(TiposDAO.listarTipos());
         inTipo.setItems(tipos);
 
     }
@@ -138,4 +143,6 @@ public class MenuCtrll implements Initializable {
 
         cocheCargado = c;
     }
+
+
 }
