@@ -38,6 +38,8 @@ public class ConnectionDB {
         }
     }
     public static void desconectar() {
+        if (con == null) return;
+
         System.out.println("Desconectando base de datos");
         con.close();
     }
