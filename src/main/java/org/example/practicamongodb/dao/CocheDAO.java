@@ -48,8 +48,14 @@ public class CocheDAO {
 
         Gson gson = new Gson();
 
-        try (MongoCursor<Document> f = collection.find(eq("matricula", cocheNuevo.getMatricula())).cursor()) {
-            if (f.hasNext()) f.next();
+        Document filtro = new Document("matricula", new Document("$eq", cocheNuevo.getMatricula()))
+                .append("_id", new Document("$ne", cocheAntiguo.get_id()));
+
+        // eq("matricula", cocheNuevo.getMatricula())
+        // new Document("$eq", cocheNuevo.getMatricula()).append("$ne", String.valueOf(cocheAntiguo.get_id()))
+        try (MongoCursor<Document> f = collection.find(filtro).cursor()) {
+            System.out.println(f);
+            //if (f.hasNext()) f.next();
             if (f.hasNext()) return false;
 
         } catch (Exception e) {
@@ -61,6 +67,7 @@ public class CocheDAO {
 
 //      collection.replaceOne(cA, cN);
 
+        // TODO cambiar forma de update para que no aplique a _id
         Document acuatizar = new Document("$set", cN);
 
         collection.updateOne(cA, acuatizar);
@@ -85,9 +92,9 @@ public class CocheDAO {
 
         MongoCollection<Document> collection = ConnectionDB.getCon().getDatabase("practicaMongo").getCollection("coches");
 
-        try (MongoCursor<Document> listaCoches = collection.find().iterator()) {
-            Gson gson = new Gson();
+        Gson gson = new Gson();
 
+        try (MongoCursor<Document> listaCoches = collection.find().iterator()) {
             while (listaCoches.hasNext()) {
                 Coche c = gson.fromJson(listaCoches.next().toJson(), Coche.class);
                 coches.add(c);
